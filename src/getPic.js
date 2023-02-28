@@ -1,15 +1,19 @@
 import axios from "axios"
 import fs from "fs"
-import Formdata from "form-data"
 
 const getNameOfUploadPicture = () => {
-  const formData = new Formdata()
+  const fileName = `${new Date()}.png`
+  const deleteFile = () => {
+    if (fs.existsSync(fileName)) {
+      fs.unlinkSync(fileName)
+    }
+  }
+  setTimeout(deleteFile, 5000)
   return axios
-    .get("https://picsum.photos/200", { responseType: "arraybuffer" })
+    .get("https://picsum.photos/300", { responseType: "arraybuffer" })
     .then(({ data }) => {
-      formData.append("photo", data)
-      fs.writeFileSync("1.png", data)
-      return formData
+      fs.writeFileSync(fileName, data)
+      return fileName
     })
 }
 
