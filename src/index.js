@@ -1,5 +1,4 @@
 import { Telegraf } from "telegraf"
-import { message } from "telegraf/filters"
 import getNameOfUploadPicture from "./getPic.js"
 
 import * as dotenv from "dotenv"
@@ -10,13 +9,10 @@ const myReg = new RegExp(/[А-Яа-я\w\s]/, "g")
 const bot = new Telegraf(process.env.BOT_TOKEN)
 bot.start((ctx) =>
   ctx.reply(
-    "Пиши 'картинка' и я тебе выдам картиночку, а если напишешь что-то другое, то я просто повторю"
+    "Пиши 'картинка' и я тебе выдам картиночку, а если напишешь что-то другое, то я просто повторю(только буквы и цифры)"
   )
 )
-// bot.help((ctx) => ctx.reply("Send me a sticker"))
-// bot.on(message("sticker"), (ctx) => {
-//   ctx.reply("Намана")
-// })
+
 bot.hears("картинка", (ctx) => {
   ctx.reply("Вот тебе картинка")
   getNameOfUploadPicture().then((fileName) => {
@@ -26,6 +22,7 @@ bot.hears("картинка", (ctx) => {
 
 bot.hears(myReg, (ctx) => {
   const chatId = ctx.update.message.chat.id
+  console.log(ctx.update.message)
   ctx.copyMessage(chatId)
 })
 
