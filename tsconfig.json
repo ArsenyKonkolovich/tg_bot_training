@@ -4,6 +4,7 @@
     "module": "es2015",
     "baseUrl": "./src",
     "outDir": "dist",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
