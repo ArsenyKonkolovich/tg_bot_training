@@ -1,7 +1,7 @@
 import Sequelize from "sequelize"
 import table from "../SQConfig.js"
 
-export const User = table.define("users", {
+export const Users = table.define("Users", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -13,7 +13,7 @@ export const User = table.define("users", {
   },
 })
 
-export const Note = table.define("notes", {
+export const Notes = table.define("Notes", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -27,13 +27,19 @@ export const Note = table.define("notes", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  userId: {
-    type: Sequelize.INTEGER,
-  },
 })
 
-await User.sync()
-await Note.sync()
+Notes.belongsTo(Users)
+Users.hasMany(Notes)
 
-const note = await Note.findOne({ where: { userId: 1 } })
+await Users.sync()
+await Notes.sync()
+
+const user = await Users.create({ name: "Zalupa" })
+console.log(user.id)
+const note = await Notes.create({
+  UserId: user.id,
+  header: "Head",
+  text: "Text",
+})
 console.log(note.header)
